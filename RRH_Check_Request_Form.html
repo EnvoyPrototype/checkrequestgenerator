@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check Request Form – Carpenter's Homelessness Prevention</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a1a;
+    --mid: #555;
+    --line: #bbb;
+    --bg-field: #f9f9f9;
+    --accent: #1d4e89;
+    --req: #c0392b;
+    --font: 'Source Sans 3', sans-serif;
+    --serif: 'Source Serif 4', Georgia, serif;
+  }
+
+  body {
+    font-family: var(--font);
+    font-size: 11px;
+    color: var(--ink);
+    background: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .page {
+    background: #fff;
+    width: 7.5in;
+    min-height: 10in;
+    padding: 0.45in 0.5in 0.4in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .header-org {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.3;
+  }
+  .header-sub {
+    font-size: 9.5px;
+    color: var(--mid);
+    font-style: italic;
+  }
+  .header-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-align: right;
+  }
+
+  /* ── Section heading ── */
+  .section-label {
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+    margin-top: 10px;
+  }
+
+  /* ── Grid layout ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 16px; }
+  .span-2 { grid-column: span 2; }
+
+  /* ── Field ── */
+  .field { display: flex; flex-direction: column; gap: 3px; }
+  .field label {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--mid);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .field label .req-star { color: var(--req); margin-left: 2px; }
+
+  .field input[type="text"],
+  .field input[type="date"],
+  .field input[type="number"],
+  .field textarea,
+  .field select {
+    font-family: var(--font);
+    font-size: 11px;
+    color: var(--ink);
+    background: var(--bg-field);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 4px 6px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    border-color: var(--accent);
+    background: #fff;
+  }
+  .field textarea { resize: none; line-height: 1.5; }
+  .field select { cursor: pointer; }
+
+  /* Required invalid highlight */
+  input:required:invalid, select:required:invalid, textarea:required:invalid {
+    border-color: #e2a0a0;
+  }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1px solid var(--line); margin: 10px 0; }
+
+  /* ── Description table ── */
+  .desc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 4px;
+  }
+  .desc-table th {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--mid);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 0 4px 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .desc-table th.amt { text-align: right; width: 90px; }
+  .desc-table td { padding: 3px 4px; vertical-align: middle; }
+  .desc-table td input {
+    font-family: var(--font);
+    font-size: 11px;
+    color: var(--ink);
+    background: var(--bg-field);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 4px 6px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .desc-table td input:focus { border-color: var(--accent); background: #fff; }
+  .desc-table td input.amt-field { text-align: right; width: 88px; }
+  .desc-table .total-row td {
+    padding-top: 6px;
+    border-top: 1.5px solid var(--ink);
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .total-label { text-align: right; padding-right: 8px !important; }
+  #total-display {
+    text-align: right;
+    width: 88px;
+    font-weight: 600;
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+
+  /* ── Row spacer ── */
+  .row { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+  .row .field { flex: 1; }
+
+  /* ── Memo box ── */
+  .memo-box {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--bg-field);
+    padding: 5px 7px;
+    font-size: 10px;
+    color: var(--mid);
+    font-style: italic;
+    margin: 4px 0 6px;
+  }
+
+  /* ── Office use boxes ── */
+  .office-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .office-box {
+    border: 1.5px solid #aaa;
+    border-radius: 4px;
+    background: #f4f4f4;
+    padding: 8px 10px;
+    min-height: 60px;
+  }
+  .office-box-title {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--mid);
+    text-align: center;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+  }
+  .office-box-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .office-box-line {
+    font-size: 9.5px;
+    color: #777;
+    display: flex;
+    gap: 6px;
+  }
+  .office-box-line span { font-weight: 600; color: var(--mid); }
+
+  /* ── Signature block ── */
+  .sig-block {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--bg-field);
+    padding: 6px 8px 4px;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 3px;
+  }
+  .sig-anchor {
+    /* Hidden DocuSign anchor tag — white text, not visible on screen or print */
+    color: white;
+    font-size: 6px;
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    user-select: none;
+    pointer-events: none;
+  }
+  .sig-line {
+    border-bottom: 1.5px solid #999;
+    width: 100%;
+    margin-bottom: 2px;
+  }
+  .sig-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 8px;
+    color: #999;
+    letter-spacing: 0.05em;
+  }
+  .sig-badge {
+    font-size: 8px;
+    color: #2d6faf;
+    letter-spacing: 0.04em;
+    text-align: right;
+    margin-top: 2px;
+  }
+  @media print {
+    .sig-badge { display: none; }
+    .sig-block { background: transparent !important; border-color: #ccc !important; }
+  }
+
+  /* ── Required note ── */
+  .req-note {
+    font-size: 8.5px;
+    color: var(--req);
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  /* ── Validation overlay ── */
+  .validation-msg {
+    display: none;
+    background: #fff3f3;
+    border: 1px solid #e2a0a0;
+    border-radius: 4px;
+    color: var(--req);
+    font-size: 10px;
+    padding: 6px 10px;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ── Print button ── */
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .btn {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 7px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #163d6e; }
+  .btn-secondary { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+  .btn-secondary:hover { background: #f0f4fa; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: none; padding: 0; display: block; }
+    .page {
+      box-shadow: none;
+      width: 100%;
+      min-height: unset;
+      padding: 0.35in 0.4in 0.3in;
+    }
+    .actions, .req-note, .validation-msg { display: none !important; }
+    input, textarea, select {
+      background: transparent !important;
+      border-color: #ccc !important;
+    }
+    .office-box { background: #f4f4f4 !important; }
+  }
+
+  @page { margin: 0; size: letter; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="header-org">Carpenter's Homelessness Prevention</div>
+      <div class="header-sub">Program/Class: Carpenter's Homelessness Prevention</div>
+    </div>
+    <div class="header-title">Check Request</div>
+  </div>
+
+  <!-- Row 1: Payable To + Dates -->
+  <div class="row">
+    <div class="field" style="flex:2">
+      <label>Payable To <span class="req-star">*</span></label>
+      <textarea id="payable-to" rows="3" required placeholder="Enter payee name and address…"></textarea>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+      <div class="field">
+        <label>Today's Date</label>
+        <input type="date" id="todays-date" readonly style="background:#f0f0f0; color:#555;">
+      </div>
+      <div class="field">
+        <label>Needed By</label>
+        <input type="date" id="needed-by" min="">
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Project/Grant + Budget Line + Invoice -->
+  <div class="grid-3" style="margin-bottom:8px;">
+    <div class="field">
+      <label>Special Project / Grant to Charge <span class="req-star">*</span></label>
+      <select id="project-grant" required>
+        <option value="" disabled selected>— Select —</option>
+        <option>ILRRH TBRA</option>
+        <option>ILRRH HRSS</option>
+        <option>ESG RRH TBRA</option>
+        <option>ESG RRH HRSS</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Budget Expense Line to Charge <span class="req-star">*</span></label>
+      <select id="budget-line" required>
+        <option value="" disabled selected>— Select —</option>
+        <option>6740-1 Rental Assistance</option>
+        <option>6740-2 Security Dep/Application</option>
+        <option>6740-3 Utilities Assistance</option>
+        <option>6740-4 Mortgage Assistance</option>
+        <option>6740-5 Hotels</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Invoice Description <span class="req-star">*</span></label>
+      <input type="text" id="invoice-num" required placeholder="Brief invoice description">
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Description / Amount table -->
+  <div class="section-label">Description &amp; Amount</div>
+  <table class="desc-table">
+    <thead>
+      <tr>
+        <th>Description <span style="color:var(--req)">*</span></th>
+        <th class="amt">Amount <span style="color:var(--req)">*</span></th>
+      </tr>
+    </thead>
+    <tbody id="desc-rows">
+      <tr>
+        <td><input type="text" class="desc-field" placeholder="Description" required></td>
+        <td><input type="number" class="amt-field" placeholder="0.00" step="0.01" min="0" required oninput="calcTotal()"></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td class="total-label">TOTAL:</td>
+        <td><div id="total-display">$0.00</div></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <hr class="divider">
+
+  <!-- Memo / Check info -->
+  <div style="margin-bottom:0;">
+    <div class="field" style="margin-bottom:6px;">
+      <label>Please put the following info in the check memo:</label>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px 16px;">
+      <div class="field">
+        <label>Last, First Name <span class="req-star">*</span></label>
+        <input type="text" id="memo-name" required placeholder="Last, First">
+      </div>
+      <div class="field">
+        <label>Acct #</label>
+        <input type="text" id="memo-acct" placeholder="Account number">
+      </div>
+      <div class="field">
+        <label>Prepared By <span class="req-star">*</span></label>
+        <input type="text" id="prepared-by" required placeholder="Name of preparer">
+      </div>
+      <div></div>
+      <div></div>
+      <div class="field">
+        <label>Approved By</label>
+        <div class="sig-block">
+          <div class="sig-anchor">/sn1/</div>
+          <div class="sig-line"></div>
+          <div class="sig-meta">
+            <span>Signature</span>
+            <span>Date</span>
+          </div>
+          <div class="sig-badge">&#9998; DocuSign signature field</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" style="margin-top:10px;">
+
+  <!-- Office use boxes -->
+  <div class="section-label" style="margin-top:10px;">For Office Use Only</div>
+  <div class="office-row">
+    <div class="office-box">
+      <div class="office-box-title">To Pay from Bank Account</div>
+      <div style="height:28px;"></div>
+    </div>
+    <div class="office-box">
+      <div class="office-box-title" style="text-decoration:underline;">PAID</div>
+      <div class="office-box-lines">
+        <div class="office-box-line"><span>Check No:</span></div>
+        <div class="office-box-line"><span>Date:</span></div>
+        <div class="office-box-line"><span>Amount:</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Required note -->
+  <div class="req-note"><span style="color:var(--req)">*</span> Required fields</div>
+  <div class="validation-msg" id="val-msg">Please complete all required fields before printing.</div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button class="btn btn-secondary" onclick="resetForm()">Clear Form</button>
+    <button class="btn btn-primary" onclick="printForm()">Print / Save as PDF</button>
+  </div>
+
+</div>
+
+<script>
+  // ── Auto-date ──
+  function toDateInput(d) {
+    return d.toISOString().split('T')[0];
+  }
+  const today = new Date();
+  const todayStr = toDateInput(today);
+  document.getElementById('todays-date').value = todayStr;
+  document.getElementById('needed-by').value = todayStr;
+  document.getElementById('needed-by').min = todayStr;
+
+  // ── Total calc ──
+  function calcTotal() {
+    const amts = document.querySelectorAll('.amt-field');
+    let total = 0;
+    amts.forEach(a => { const v = parseFloat(a.value); if (!isNaN(v)) total += v; });
+    document.getElementById('total-display').textContent =
+      '$' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // ── Validate required fields ──
+  function validateForm() {
+    const required = [
+      document.getElementById('payable-to'),
+      document.getElementById('project-grant'),
+      document.getElementById('budget-line'),
+      document.getElementById('invoice-num'),
+      document.getElementById('memo-name'),
+      document.getElementById('prepared-by'),
+    ];
+    const firstDescAmt = document.querySelector('.amt-field');
+    const firstDesc = document.querySelector('.desc-field');
+
+    let ok = true;
+    [...required, firstDescAmt, firstDesc].forEach(el => {
+      if (!el.value.trim()) { el.style.borderColor = '#c0392b'; ok = false; }
+      else el.style.borderColor = '';
+    });
+    return ok;
+  }
+
+  // ── Print ──
+  function printForm() {
+    const msg = document.getElementById('val-msg');
+    if (!validateForm()) {
+      msg.style.display = 'block';
+      return;
+    }
+    msg.style.display = 'none';
+    window.print();
+  }
+
+  // ── Reset ──
+  function resetForm() {
+    if (!confirm('Clear all form data?')) return;
+    document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
+    document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+    document.getElementById('todays-date').value = todayStr;
+    document.getElementById('needed-by').value = todayStr;
+    document.getElementById('total-display').textContent = '$0.00';
+    document.getElementById('val-msg').style.display = 'none';
+  }
+</script>
+</body>
+</html>
