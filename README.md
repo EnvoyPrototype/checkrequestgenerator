@@ -11,6 +11,7 @@ A browser-based check request form that can be filled out digitally, printed, or
 
 - **Auto-generated date** — Today's date fills automatically; "Needed By" defaults to today but can be changed to any future date
 - **Dropdown menus** — Pre-populated options for Special Project/Grant and Budget Expense Line
+- **Payment method selection** — Required radio button choice between Mail/Direct Deposit and Hold for Pickup
 - **Auto-calculating total** — Amount field updates the TOTAL automatically as you type
 - **DocuSign-ready** — The Approved By field includes a hidden `/sn1/` anchor tag so DocuSign auto-places a signature field when the PDF is uploaded
 - **Required field validation** — Highlights missing required fields before allowing print
@@ -29,7 +30,8 @@ A browser-based check request form that can be filled out digitally, printed, or
    - Special Project / Grant to Charge
    - Budget Expense Line to Charge
    - Invoice Description
-   - Description & Amount (first row)
+   - Description & Amount
+   - Payment Method
    - Last, First Name (check memo)
    - Prepared By
 3. Click **Print / Save as PDF**
@@ -37,6 +39,7 @@ A browser-based check request form that can be filled out digitally, printed, or
 ### Printing a Physical Copy
 - Click **Print / Save as PDF**
 - In the print dialog, select your printer
+- The Approved By line will print as a blank signature line
 - The form is pre-formatted to fit one letter-size page
 
 ### Saving as a PDF
@@ -60,6 +63,7 @@ A browser-based check request form that can be filled out digitally, printed, or
 | Payable To | ✅ | 3–4 line text area for payee name/address |
 | Today's Date | — | Auto-fills, read-only |
 | Needed By | — | Defaults to today; future dates selectable |
+| Payment Method | ✅ | Radio: Mail/Direct Deposit or Hold for Pickup |
 | Special Project / Grant | ✅ | Dropdown |
 | Budget Expense Line | ✅ | Dropdown |
 | Invoice Description | ✅ | Brief description of the invoice |
@@ -96,6 +100,8 @@ All options are defined directly in the HTML file and can be edited without any 
 **To add/edit dropdown options** — Search for `<select id="project-grant">` or `<select id="budget-line">` and add/remove `<option>` lines.
 
 **To add more description rows** — Duplicate the `<tr>` block inside `<tbody id="desc-rows">`. New amount fields will automatically be included in the total calculation.
+
+**To add/edit payment method options** — Search for `name="payment-method"` and add/remove `<label class="radio-label">` blocks.
 
 **To update the organization name** — Search for `Carpenter's Homelessness Prevention` and replace as needed.
 
