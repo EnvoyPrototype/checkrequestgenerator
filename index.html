@@ -193,6 +193,37 @@
     margin: 4px 0 6px;
   }
 
+  /* Hide number input spinners */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type="number"] { -moz-appearance: textfield; }
+
+  /* ── Radio buttons ── */
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 4px 0;
+  }
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--ink);
+    cursor: pointer;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .radio-label input[type="radio"] {
+    accent-color: var(--accent);
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
   /* ── Office use boxes ── */
   .office-row {
     display: grid;
@@ -369,6 +400,19 @@
         <label>Needed By</label>
         <input type="date" id="needed-by" min="">
       </div>
+      <div class="field">
+        <label>Payment Method <span class="req-star">*</span></label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="payment-method" value="Mail / Direct Deposit" required>
+            Mail / Direct Deposit
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="payment-method" value="Hold for Pickup">
+            Hold for Pickup
+          </label>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -527,7 +571,14 @@
     const firstDescAmt = document.querySelector('.amt-field');
     const firstDesc = document.querySelector('.desc-field');
 
+    const paymentMethod = document.querySelector('input[name="payment-method"]:checked');
     let ok = true;
+    if (!paymentMethod) {
+      document.querySelector('.radio-group').style.outline = '1px solid #c0392b';
+      ok = false;
+    } else {
+      document.querySelector('.radio-group').style.outline = 'none';
+    }
     [...required, firstDescAmt, firstDesc].forEach(el => {
       if (!el.value.trim()) { el.style.borderColor = '#c0392b'; ok = false; }
       else el.style.borderColor = '';
@@ -550,6 +601,8 @@
   function resetForm() {
     if (!confirm('Clear all form data?')) return;
     document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
+    document.querySelectorAll('input[name="payment-method"]').forEach(el => el.checked = false);
+    document.querySelector('.radio-group').style.outline = 'none';
     document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
     document.getElementById('todays-date').value = todayStr;
     document.getElementById('needed-by').value = todayStr;
