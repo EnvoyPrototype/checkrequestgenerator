@@ -29,7 +29,6 @@ A browser-based check request form that can be filled out digitally, printed, or
    - Payable To
    - Special Project / Grant to Charge
    - Budget Expense Line to Charge
-   - Invoice Description
    - Description & Amount
    - Payment Method
    - Last, First Name (check memo)
@@ -66,11 +65,10 @@ A browser-based check request form that can be filled out digitally, printed, or
 | Payment Method | ✅ | Radio: Mail/Direct Deposit or Hold for Pickup |
 | Special Project / Grant | ✅ | Dropdown |
 | Budget Expense Line | ✅ | Dropdown |
-| Invoice Description | ✅ | Brief description of the invoice |
+| Acct # | — | Optional account number |
 | Description | ✅ | Line item description |
 | Amount | ✅ | Auto-adds to TOTAL |
 | Last, First Name | ✅ | For check memo |
-| Acct # | — | For check memo |
 | Prepared By | ✅ | Name of form preparer |
 | Approved By | — | DocuSign / physical signature field |
 
