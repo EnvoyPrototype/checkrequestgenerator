@@ -198,6 +198,22 @@
   input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
   input[type="number"] { -moz-appearance: textfield; }
 
+  /* ── Print-value spans (shown instead of selects when printing) ── */
+  .print-val {
+    display: none;
+    font-size: 11px;
+    color: var(--ink);
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 100%;
+    min-height: 26px;
+  }
+  @media print {
+    select { display: none !important; }
+    .print-val { display: block !important; }
+  }
+
   /* ── Radio buttons ── */
   .radio-group {
     display: flex;
@@ -420,17 +436,18 @@
   <div class="grid-3" style="margin-bottom:8px;">
     <div class="field">
       <label>Special Project / Grant to Charge <span class="req-star">*</span></label>
-      <select id="project-grant" required>
+      <select id="project-grant" required onchange="updatePrintVal(this)">
         <option value="" disabled selected>— Select —</option>
         <option>ILRRH TBRA</option>
         <option>ILRRH HRSS</option>
         <option>ESG RRH TBRA</option>
         <option>ESG RRH HRSS</option>
       </select>
+      <span class="print-val" id="project-grant-print"></span>
     </div>
     <div class="field">
       <label>Budget Expense Line to Charge <span class="req-star">*</span></label>
-      <select id="budget-line" required>
+      <select id="budget-line" required onchange="updatePrintVal(this)">
         <option value="" disabled selected>— Select —</option>
         <option>6740-1 Rental Assistance</option>
         <option>6740-2 Security Dep/Application</option>
@@ -438,6 +455,7 @@
         <option>6740-4 Mortgage Assistance</option>
         <option>6740-5 Hotels</option>
       </select>
+      <span class="print-val" id="budget-line-print"></span>
     </div>
     <div class="field">
       <label>Acct #</label>
@@ -534,6 +552,14 @@
 </div>
 
 <script>
+  // ── Sync select values to print spans ──
+  function updatePrintVal(sel) {
+    const span = document.getElementById(sel.id + '-print');
+    if (span) span.textContent = sel.value || '';
+  }
+  // Init on load in case of browser autofill
+  document.querySelectorAll('select').forEach(sel => updatePrintVal(sel));
+
   // ── Auto-date ──
   function toDateInput(d) {
     return d.toISOString().split('T')[0];
@@ -597,7 +623,7 @@
     document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
     document.querySelectorAll('input[name="payment-method"]').forEach(el => el.checked = false);
     document.querySelector('.radio-group').style.outline = 'none';
-    document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+    document.querySelectorAll('select').forEach(el => { el.selectedIndex = 0; updatePrintVal(el); });
     document.getElementById('todays-date').value = todayStr;
     document.getElementById('needed-by').value = todayStr;
     document.getElementById('total-display').textContent = '$0.00';
