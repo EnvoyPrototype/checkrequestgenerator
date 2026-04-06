@@ -193,6 +193,35 @@
     margin: 4px 0 6px;
   }
 
+  /* ── Currency prefix ── */
+  .currency-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--bg-field);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    width: 88px;
+    overflow: hidden;
+  }
+  .currency-wrap:focus-within {
+    border-color: var(--accent);
+    background: #fff;
+  }
+  .currency-prefix {
+    padding: 4px 4px 4px 6px;
+    font-size: 11px;
+    color: var(--mid);
+    user-select: none;
+  }
+  .currency-wrap .amt-field {
+    border: none !important;
+    background: transparent !important;
+    padding: 4px 6px 4px 2px;
+    width: 100%;
+    text-align: right;
+  }
+  .currency-wrap .amt-field:focus { outline: none; }
+
   /* Hide number input spinners */
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -477,7 +506,7 @@
     <tbody id="desc-rows">
       <tr>
         <td><input type="text" class="desc-field" placeholder="Description" required></td>
-        <td><input type="number" class="amt-field" placeholder="0.00" step="0.01" min="0" required oninput="calcTotal()"></td>
+        <td><div class="currency-wrap"><span class="currency-prefix">$</span><input type="number" class="amt-field" placeholder="0.00" step="0.01" min="0" required oninput="calcTotal()"></div></td>
       </tr>
     </tbody>
     <tfoot>
