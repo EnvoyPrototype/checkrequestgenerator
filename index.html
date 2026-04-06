@@ -195,32 +195,26 @@
 
   /* ── Currency prefix ── */
   .currency-wrap {
-    display: flex;
-    align-items: center;
-    background: var(--bg-field);
-    border: 1px solid var(--line);
-    border-radius: 3px;
+    position: relative;
+    display: inline-block;
     width: 88px;
-    overflow: hidden;
-  }
-  .currency-wrap:focus-within {
-    border-color: var(--accent);
-    background: #fff;
   }
   .currency-prefix {
-    padding: 4px 4px 4px 6px;
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 11px;
     color: var(--mid);
     user-select: none;
+    pointer-events: none;
+    z-index: 1;
   }
   .currency-wrap .amt-field {
-    border: none !important;
-    background: transparent !important;
-    padding: 4px 6px 4px 2px;
-    width: 100%;
+    width: 88px;
+    padding-left: 16px !important;
     text-align: right;
   }
-  .currency-wrap .amt-field:focus { outline: none; }
 
   /* Hide number input spinners */
   input[type="number"]::-webkit-inner-spin-button,
