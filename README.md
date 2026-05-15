@@ -12,19 +12,20 @@ A browser-based check request form that can be filled out digitally, printed, or
 - **Auto-generated date** — Today's date fills automatically; "Needed By" defaults to today but can be changed to any future date
 - **Dropdown menus** — Pre-populated options for Special Project/Grant and Budget Expense Line
 - **Payment method selection** — Required radio button choice between Mail/Direct Deposit and Hold for Pickup
-- **Auto-calculating total** — Amount field updates the TOTAL automatically as you type
+- **Auto-calculating total** — Amount field updates the TOTAL automatically as you type; amounts format to two decimal places on blur
 - **DocuSign-ready** — The Approved By field includes a hidden `/sn1/` anchor tag so DocuSign auto-places a signature field when the PDF is uploaded
-- **Required field validation** — Highlights missing required fields before allowing print
+- **Required field validation** — Highlights missing required fields before allowing print; errors clear as you correct them
 - **One-page print layout** — Formatted to fit on a single letter-size page
 - **Office use section** — "To Pay from Bank Account" and "PAID" boxes are inert on screen but print cleanly for manual office use
 - **Clear form button** — Resets all fields back to defaults
+- **Accessible markup** — All inputs have associated labels; payment method uses a `<fieldset>`/`<legend>`; validation message uses `role="alert"` for screen readers
 
 ---
 
 ## Usage
 
 ### Filling Out the Form
-1. Open `check_request_form.html` in any modern web browser
+1. Open `index.html` in any modern web browser
 2. Complete all required fields (marked with a red `*`):
    - Payable To
    - Special Project / Grant to Charge
@@ -120,8 +121,8 @@ Works in all modern browsers. No internet connection required after the file is 
 ## File Structure
 
 ```
-check_request_form.html   # Single self-contained file — HTML, CSS, and JS
-README.md                 # This file
+index.html   # Single self-contained file — HTML, CSS, and JS
+README.md    # This file
 ```
 
 ---

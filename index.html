@@ -127,6 +127,16 @@
     border-color: #e2a0a0;
   }
 
+  /* Validation error state */
+  .field-error {
+    border-color: #c0392b !important;
+  }
+  .radio-group.field-error {
+    outline: 1px solid #c0392b;
+    border-radius: 3px;
+    padding: 2px;
+  }
+
   /* ── Divider ── */
   .divider { border: none; border-top: 1px solid var(--line); margin: 10px 0; }
 
@@ -236,6 +246,26 @@
     select { display: none !important; }
     .print-val { display: block !important; }
   }
+
+  /* ── Radio fieldset ── */
+  .radio-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .radio-fieldset legend {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--mid);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0;
+    margin-bottom: 3px;
+    float: left;
+    width: 100%;
+  }
+  .radio-fieldset legend .req-star { color: var(--req); margin-left: 2px; }
+  .radio-fieldset::after { content: ''; display: table; clear: both; }
 
   /* ── Radio buttons ── */
   .radio-group {
@@ -427,30 +457,32 @@
   <!-- Row 1: Payable To + Dates -->
   <div class="row">
     <div class="field" style="flex:2">
-      <label>Payable To <span class="req-star">*</span></label>
+      <label for="payable-to">Payable To <span class="req-star">*</span></label>
       <textarea id="payable-to" rows="3" required placeholder="Enter payee name and address…"></textarea>
     </div>
     <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
       <div class="field">
-        <label>Today's Date</label>
+        <label for="todays-date">Today's Date</label>
         <input type="date" id="todays-date" readonly style="background:#f0f0f0; color:#555;">
       </div>
       <div class="field">
-        <label>Needed By</label>
+        <label for="needed-by">Needed By</label>
         <input type="date" id="needed-by" min="">
       </div>
       <div class="field">
-        <label>Payment Method <span class="req-star">*</span></label>
-        <div class="radio-group">
-          <label class="radio-label">
-            <input type="radio" name="payment-method" value="Mail / Direct Deposit" required>
-            Mail / Direct Deposit
-          </label>
-          <label class="radio-label">
-            <input type="radio" name="payment-method" value="Hold for Pickup">
-            Hold for Pickup
-          </label>
-        </div>
+        <fieldset class="radio-fieldset">
+          <legend>Payment Method <span class="req-star">*</span></legend>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="payment-method" value="Mail / Direct Deposit" required>
+              Mail / Direct Deposit
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="payment-method" value="Hold for Pickup">
+              Hold for Pickup
+            </label>
+          </div>
+        </fieldset>
       </div>
     </div>
   </div>
@@ -458,8 +490,8 @@
   <!-- Row 2: Project/Grant + Budget Line + Invoice -->
   <div class="grid-3" style="margin-bottom:8px;">
     <div class="field">
-      <label>Special Project / Grant to Charge <span class="req-star">*</span></label>
-      <select id="project-grant" required onchange="updatePrintVal(this)">
+      <label for="project-grant">Special Project / Grant to Charge <span class="req-star">*</span></label>
+      <select id="project-grant" required>
         <option value="" disabled selected>— Select —</option>
         <option>ILRRH TBRA</option>
         <option>ILRRH HRSS</option>
@@ -469,8 +501,8 @@
       <span class="print-val" id="project-grant-print"></span>
     </div>
     <div class="field">
-      <label>Budget Expense Line to Charge <span class="req-star">*</span></label>
-      <select id="budget-line" required onchange="updatePrintVal(this)">
+      <label for="budget-line">Budget Expense Line to Charge <span class="req-star">*</span></label>
+      <select id="budget-line" required>
         <option value="" disabled selected>— Select —</option>
         <option>6740-1 Rental Assistance</option>
         <option>6740-2 Security Dep/Application</option>
@@ -481,7 +513,7 @@
       <span class="print-val" id="budget-line-print"></span>
     </div>
     <div class="field">
-      <label>Acct #</label>
+      <label for="invoice-num">Acct #</label>
       <input type="text" id="invoice-num" placeholder="Account number">
     </div>
   </div>
@@ -500,7 +532,7 @@
     <tbody id="desc-rows">
       <tr>
         <td><input type="text" class="desc-field" placeholder="Description" required></td>
-        <td><div class="currency-wrap"><span class="currency-prefix">$</span><input type="number" class="amt-field" placeholder="0.00" step="0.01" min="0" required oninput="calcTotal()"></div></td>
+        <td><div class="currency-wrap"><span class="currency-prefix">$</span><input type="number" class="amt-field" placeholder="0.00" step="0.01" min="0" required></div></td>
       </tr>
     </tbody>
     <tfoot>
@@ -520,11 +552,11 @@
     </div>
     <div style="display:grid; grid-template-columns:2fr 1fr; gap:8px 16px;">
       <div class="field">
-        <label>Last, First Name <span class="req-star">*</span></label>
+        <label for="memo-name">Last, First Name <span class="req-star">*</span></label>
         <input type="text" id="memo-name" required placeholder="Last, First">
       </div>
       <div class="field">
-        <label>Prepared By <span class="req-star">*</span></label>
+        <label for="prepared-by">Prepared By <span class="req-star">*</span></label>
         <input type="text" id="prepared-by" required placeholder="Name of preparer">
       </div>
       <div></div>
@@ -564,12 +596,12 @@
 
   <!-- Required note -->
   <div class="req-note"><span style="color:var(--req)">*</span> Required fields</div>
-  <div class="validation-msg" id="val-msg">Please complete all required fields before printing.</div>
+  <div class="validation-msg" id="val-msg" role="alert">Please complete all required fields before printing.</div>
 
   <!-- Actions -->
   <div class="actions">
-    <button class="btn btn-secondary" onclick="resetForm()">Clear Form</button>
-    <button class="btn btn-primary" onclick="printForm()">Print / Save as PDF</button>
+    <button id="btn-clear" class="btn btn-secondary">Clear Form</button>
+    <button id="btn-print" class="btn btn-primary">Print / Save as PDF</button>
   </div>
 
 </div>
@@ -583,12 +615,13 @@
   // Init on load in case of browser autofill
   document.querySelectorAll('select').forEach(sel => updatePrintVal(sel));
 
-  // ── Auto-date ──
-  function toDateInput(d) {
-    return d.toISOString().split('T')[0];
-  }
+  // ── Auto-date (local time, not UTC) ──
   const today = new Date();
-  const todayStr = toDateInput(today);
+  const todayStr = [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, '0'),
+    String(today.getDate()).padStart(2, '0')
+  ].join('-');
   document.getElementById('todays-date').value = todayStr;
   document.getElementById('needed-by').value = todayStr;
   document.getElementById('needed-by').min = todayStr;
@@ -602,6 +635,34 @@
       '$' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
+  // ── Amount formatting on blur (event delegation covers added rows too) ──
+  document.getElementById('desc-rows').addEventListener('focusout', function(e) {
+    if (e.target.classList.contains('amt-field')) {
+      const v = parseFloat(e.target.value);
+      if (!isNaN(v)) e.target.value = v.toFixed(2);
+    }
+  });
+
+  // ── Event listeners replacing inline handlers ──
+  document.getElementById('project-grant').addEventListener('change', function() { updatePrintVal(this); });
+  document.getElementById('budget-line').addEventListener('change', function() { updatePrintVal(this); });
+  document.getElementById('desc-rows').addEventListener('input', function(e) {
+    if (e.target.classList.contains('amt-field')) calcTotal();
+  });
+  document.getElementById('btn-clear').addEventListener('click', resetForm);
+  document.getElementById('btn-print').addEventListener('click', printForm);
+
+  // ── Clear field errors as user corrects them ──
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', function() { this.classList.remove('field-error'); });
+    el.addEventListener('change', function() { this.classList.remove('field-error'); });
+  });
+  document.querySelectorAll('input[name="payment-method"]').forEach(el => {
+    el.addEventListener('change', function() {
+      document.querySelector('.radio-group').classList.remove('field-error');
+    });
+  });
+
   // ── Validate required fields ──
   function validateForm() {
     const required = [
@@ -613,18 +674,19 @@
     ];
     const firstDescAmt = document.querySelector('.amt-field');
     const firstDesc = document.querySelector('.desc-field');
-
     const paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+    const radioGroup = document.querySelector('.radio-group');
+
     let ok = true;
     if (!paymentMethod) {
-      document.querySelector('.radio-group').style.outline = '1px solid #c0392b';
+      radioGroup.classList.add('field-error');
       ok = false;
     } else {
-      document.querySelector('.radio-group').style.outline = 'none';
+      radioGroup.classList.remove('field-error');
     }
     [...required, firstDescAmt, firstDesc].forEach(el => {
-      if (!el.value.trim()) { el.style.borderColor = '#c0392b'; ok = false; }
-      else el.style.borderColor = '';
+      if (!el.value.trim()) { el.classList.add('field-error'); ok = false; }
+      else el.classList.remove('field-error');
     });
     return ok;
   }
@@ -643,9 +705,12 @@
   // ── Reset ──
   function resetForm() {
     if (!confirm('Clear all form data?')) return;
-    document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
+    document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => {
+      el.value = '';
+      el.classList.remove('field-error');
+    });
     document.querySelectorAll('input[name="payment-method"]').forEach(el => el.checked = false);
-    document.querySelector('.radio-group').style.outline = 'none';
+    document.querySelector('.radio-group').classList.remove('field-error');
     document.querySelectorAll('select').forEach(el => { el.selectedIndex = 0; updatePrintVal(el); });
     document.getElementById('todays-date').value = todayStr;
     document.getElementById('needed-by').value = todayStr;
